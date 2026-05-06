@@ -11,6 +11,7 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
 mkdir -p $LOGS_FOLDER
+echo -e "Script started executing at : $(date)" |  tee -a $LOG_FILE
 
 #check user has root previliges
 if [ $USERID -eq 0 ]
@@ -26,7 +27,7 @@ VERIFY(){
     then 
         echo -e "$2 is ... $G SUCCESS $N" | tee -a $LOG_FILE
     else 
-        echo -e "$2 is ... $G FAILURE $N" | tee -a $LOG_FILE
+        echo -e "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
         exit 1
     fi
 }
@@ -47,10 +48,13 @@ VERIFY $? "Starting nginx"
 rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 VERIFY "Removing default content"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$LOG_FILE
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip 
 VERIFY $? "Downloading frontend"
 
-cd /usr/share/nginx/html &>>$LOG_FILE
+rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
+VERIFY $? "Remove default nginx conf"
+
+cd /usr/share/nginx/html 
 unzip /tmp/frontend.zip &>>$LOG_FILE
 VERIFY $? "Unzipping frontend into temp directory"
 
