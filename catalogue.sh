@@ -29,6 +29,7 @@ VERIFY(){
     else
         echo -e "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
         exit 1 #give other than 0 upto 127
+    fi
 }
 
 dnf module disable nodejs -y &>>$LOG_FILE
