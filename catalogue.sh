@@ -44,7 +44,7 @@ VERIFY $? "Installing nodejs"
 mkdir -p /app
 VERIFY $? "Creating app directory"
 
-useradd --app --home /app --shell /sbin/nologin --comment "Roboshop system user" roboshop &>>$LOG_FILE
+useradd --system --home /app --shell /sbin/nologin --comment "Roboshop system user" roboshop &>>$LOG_FILE
 VERIFY $? "Creating roboshop user"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
