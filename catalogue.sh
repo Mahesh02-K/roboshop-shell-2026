@@ -16,18 +16,18 @@ echo "Script started executing at : $(date)"
 #check user has root previleges
 if [ $USERID -eq 0 ]
 then
-    echo -e "You are running with root access ... $G Move forward $N"
+    echo -e "You are running with root access ... $G Move forward $N" | tee -a $LOG_FILE
 else 
-    echo -e "$R ERR ::: Please run this with root user $N"
-    exit 1 #give other than 0 upto 127
+    echo -e "$R ERR ::: Please run this with root user $N" | tee -a $LOG_FILE
+    exit 1 #give other than 0 upto 127 
 fi 
 
 VERIFY(){
     if [ $1 -eq 0 ]
     then 
-        echo -e "$2 is ... $G SUCCESS $N"
+        echo -e "$2 is ... $G SUCCESS $N" | tee -a $LOG_FILE
     else
-        echo -e "$2 is ... $R FAILURE $N"
+        echo -e "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
         exit 1 #give other than 0 upto 127
 }
 
