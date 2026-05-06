@@ -47,26 +47,36 @@ systemctl start nginx &>>$LOG_FILE
 VERIFY $? "Starting nginx"
 
 # rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
-rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
-VERIFY "Removing default content"
+# VERIFY "Removing default content"
 
 # curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
-VERIFY $? "Downloading frontend"
+# VERIFY $? "Downloading frontend"
 
 # cd /usr/share/nginx/html 
 # unzip /tmp/frontend.zip &>>$LOG_FILE
-cd /usr/share/nginx/html 
-unzip /tmp/frontend.zip &>>$LOG_FILE
-VERIFY $? "Unzipping frontend into temp directory"
+# VERIFY $? "Unzipping frontend into temp directory"
 
 # rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
+# VERIFY $? "Remove default nginx conf"
+
+# cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
+# VERIFY $? "Copying nginx configuration file"
+
+rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
+VERIFY $? "Removing Default Content"
+
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+VERIFY $? "Downloading Frontend Content"
+
+cd /usr/share/nginx/html 
+unzip /tmp/frontend.zip &>>$LOG_FILE
+VERIFY $? "Unzipping frontend Content"
+
 rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
 VERIFY $? "Remove default nginx conf"
 
-# cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
-VERIFY $? "Copying nginx configuration file"
+VERIFY $? "Copying Nginx conf file"
 
 systemctl restart nginx &>>$LOG_FILE
 VERIFY $? "Restarting nginx"
