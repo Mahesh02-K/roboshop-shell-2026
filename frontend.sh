@@ -46,6 +46,7 @@ systemctl enable nginx &>>$LOG_FILE
 systemctl start nginx &>>$LOG_FILE
 VERIFY $? "Starting nginx"
 
+# rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
 VERIFY "Removing default content"
 
