@@ -64,7 +64,8 @@ VERIFY $? "Unzipping frontend into temp directory"
 rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
 VERIFY $? "Remove default nginx conf"
 
-cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
+# cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
 VERIFY $? "Copying nginx configuration file"
 
 systemctl restart nginx &>>$LOG_FILE
