@@ -33,7 +33,7 @@ VERIFY(){
     fi
 }
 
-cp $PWD/mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo
 VERIFY $? "Copying mongo repo file"
 
 dnf install mongodb-org -y &>>$LOG_FILE
