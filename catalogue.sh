@@ -9,6 +9,7 @@ N="\e[0m"
 LOGS_FOLDER="/var/log/roboshop-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+SCRIPT_DIR=$PWD
 
 mkdir -p $LOGS_FOLDER
 echo "Script started executing at : $(date)"
@@ -64,7 +65,7 @@ VERIFY $? "Unzipping Catalogue"
 npm install &>>$LOG_FILE
 VERIFY $? "Installing Dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VERIFY $? "Creating service file"
 
 systemctl daemon-reload &>>$LOG_FILE
@@ -74,7 +75,7 @@ systemctl enable catalogue &>>$LOG_FILE
 systemctl start catalogue &>>$LOG_FILE
 VERIFY $? "Starting Catalogue"
 
-cp $PWD/mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh - &>>$LOG_FILE
 VERIFY $? "Installing Mongodb client"
 
