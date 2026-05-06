@@ -60,6 +60,7 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>>$LOG_FILE
 VERIFY $? "Unzipping frontend into temp directory"
 
+# rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
 rm -rf /etc/nginx/nginx.conf &>>$LOG_FILE
 VERIFY $? "Remove default nginx conf"
 
