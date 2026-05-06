@@ -76,7 +76,7 @@ systemctl start catalogue &>>$LOG_FILE
 VERIFY $? "Starting Catalogue"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-dnf install mongodb-mongosh - &>>$LOG_FILE
+dnf install mongodb-mongosh -y &>>$LOG_FILE
 VERIFY $? "Installing Mongodb client"
 
 STATUS=$(mongosh --host mongodb.kakuturu.store --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
