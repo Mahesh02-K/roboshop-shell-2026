@@ -57,7 +57,7 @@ VERIFY $? "Unzipping Catalogue"
 npm install &>>$LOG_FILE
 VERIFY $? "Installing Dependencies"
 
-cp $PWD/catalogue.service /etc/systemd/system/catalogue.service
+cp catalogue.service /etc/systemd/system/catalogue.service
 VERIFY $? "Creating service file"
 
 systemctl daemon-reload &>>$LOG_FILE
