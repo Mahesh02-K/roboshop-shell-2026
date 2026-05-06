@@ -44,7 +44,7 @@ VERIFY $? "Installing nodejs"
 mkdir -p /app
 VERIFY $? "Creating app directory"
 
-id roboshop
+id roboshop &>>$LOG_FILE
 if [ $? -eq 0 ]
 then
     echo -e "Roboshop user is ... $Y ALREADY CREATED $N"
@@ -77,8 +77,14 @@ cp $PWD/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh - &>>$LOG_FILE
 VERIFY $? "Installing Mongodb client"
 
-mongosh --host mongodb.kakuturu.online </app/db/master-data.js &>>$LOG_FILE
-VERIFY $? "Loading data into MongoDB"
+STATUS=$(mongosh --host mongodb.kakuturu.store --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+if [ $STATUS -lt 0 ]
+then
+    mongosh --host mongodb.kakuturu.store </app/db/master-data.js &>>$LOG_FILE
+    VERIFY $? "Loading data into MongoDB"
+else
+    echo -e "Data is already loaded ... $Y SKIPPING $N" | tee -a $LOG_FILE
+fi
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(($END_TIME - $START_TIME))
