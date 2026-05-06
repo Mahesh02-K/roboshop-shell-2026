@@ -58,7 +58,7 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>>$LOG_FILE
 VERIFY $? "Unzipping frontend into temp directory"
 
-cp nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
+cp $PWD/nginx.conf /etc/nginx/nginx.conf &>>$LOG_FILE
 VERIFY $? "Copying nginx configuration file"
 
 systemctl restart nginx &>>$LOG_FILE
