@@ -30,6 +30,7 @@ VERIFY(){
     else 
         echo -e "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
         exit 1
+    fi
 }
 
 dnf module disbale nodejs -y &>>$LOG_FILE
