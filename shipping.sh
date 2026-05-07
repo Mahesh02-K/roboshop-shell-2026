@@ -23,7 +23,7 @@ else
     exit 1
 fi 
 
-echo -e "$G ENTER ROOT PASSWORD TO SETUP $N" | tee -a $LOG_FILE
+echo -e "$R ENTER ROOT PASSWORD TO SETUP $N" | tee -a $LOG_FILE
 read -s MYSQL_ROOT_PASSWORD
 
 VERIFY(){
