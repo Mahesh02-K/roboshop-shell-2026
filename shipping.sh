@@ -67,42 +67,23 @@ cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
 VERIFY $? "Copying shipping service file"
 
 systemctl daemon-reload &>>$LOG_FILE
-VERIFY $? "Daemon Realod"
+systemctl enable shipping &>>$LOG_FILE
+systemctl start shipping &>>$LOG_FILE
+VERIFY $? "Starting shipping service"
 
-systemctl enable shipping  &>>$LOG_FILE
-VERIFY $? "Enabling Shipping"
-
-dnf install mysql -y  &>>$LOG_FILE
-VERIFY $? "Install MySQL"
+dnf install mysql -y &>>$LOG_FILE
+VERIFY $? "Installing mysql client"
 
 mysql -h mysql.kakuturu.online -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' &>>$LOG_FILE
-if [ $? -ne 0 ]
-then
+if [ $? -eq 0 ]
+then 
+    echo -e "Data is .. $Y Already loaded $N" | tee -a $LOG_FILE
+else 
     mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
-    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql  &>>$LOG_FILE
-    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
-    VERIFY $? "Loading data into MySQL"
-else
-    echo -e "Data is already loaded into MySQL ... $Y SKIPPING $N"
+    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
+    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE   
+    VERIFY $? "Data loading into mysql"
 fi
-# systemctl daemon-reload &>>$LOG_FILE
-# systemctl enable shipping &>>$LOG_FILE
-# systemctl start shipping &>>$LOG_FILE
-# VERIFY $? "Starting shipping service"
-
-# dnf install mysql -y &>>$LOG_FILE
-# VERIFY $? "Installing mysql client"
-
-# mysql -h mysql.kakuturu.online -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' &>>$LOG_FILE
-# if [ $? -eq 0 ]
-# then 
-#     echo -e "Data is .. $Y Already loaded $N" | tee -a $LOG_FILE
-# else 
-#     mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
-#     mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
-#     mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE   
-#     VERIFY $? "Data loading into mysql"
-# fi
 
 systemctl restart shipping &>>$LOG_FILE
 VERIFY $? "Restarting shipping"
