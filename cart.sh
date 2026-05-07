@@ -33,7 +33,7 @@ VERIFY(){
     fi
 }
 
-dnf module disbale nodejs -y &>>$LOG_FILE
+dnf module disable nodejs -y &>>$LOG_FILE
 VERIFY $? "Disabling Nodejs"
 
 dnf module enable nodejs:20 -y &>>$LOG_FILE
