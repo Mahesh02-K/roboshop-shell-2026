@@ -41,9 +41,9 @@ VERIFY $? "Copying repo file"
 dnf install rabbitmq-server -y &>>$LOG_FILE
 VERIFY $? "Installing rabbitmq"
 
-systemctl enable rabbitmq &>>$LOG_FILE
-systemctl start rabbitmq &>>$LOG_FILE
-VERIFY $? "Starting rabbitmq"
+systemctl enable rabbitmq-server &>>$LOG_FILE
+systemctl start rabbitmq-server &>>$LOG_FILE
+VERIFY $? "Starting rabbitmq-server"
 
 rabbitmqctl add_user roboshop $RABBITMQ_PASSWD &>>$LOG_FILE
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOG_FILE
