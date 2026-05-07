@@ -5,7 +5,7 @@ USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
-N="\e[37m"
+N="\e[0m"
 
 LOGS_FOLDER="/var/log/roboshop-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
@@ -13,57 +13,56 @@ LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 SCRIPT_DIR=$PWD
 
 mkdir -p $LOGS_FOLDER
-echo -e "Script started executing at : $Y $(date)" | tee -a $LOG_FILE
+echo -e "Script started executing at : $Y $(date) $N" | tee -a $LOG_FILE
 
-if [ $USERID -ne 0 ]
-then
-    echo -e "$R ERROR ::: $N PLEASE RUN WITH ROOT ACCESS" | tee -a $LOG_FILE
-    exit 1 #give other than 0 upto 127
-else
-    echo -e "$G SUCCESS ::: $N YOU ARE RUNNING WITH ROOT ACCESS" | tee -a $LOG_FILE
-fi 
+if [ $USERID -eq 0 ]
+then 
+    echo -e "You are running with root access ... $G Move Forward $N" | tee -a $LOG_FILE
+else 
+    echo -e "$R ERR :: Please run this with root access $N" | tee -a $LOG_FILE
+    exit 1
+fi
 
 VERIFY(){
     if [ $1 -eq 0 ]
-    then
+    then 
         echo -e "$2 is ... $G SUCCESS $N" | tee -a $LOG_FILE
     else
         echo -e "$2 is ... $R FAILURE $N" | tee -a $LOG_FILE
-    exit 1 #give other than 0 upto 127
+        exit 1
     fi
 }
 
 dnf module disable nodejs -y &>>$LOG_FILE
-VERIFY $? "Disabling Default Nodejs"
+VERIFY $? "Disabling default nodejs"
 
 dnf module enable nodejs:20 -y &>>$LOG_FILE
-VERIFY $? "Enabling Nodejs:20"
+VERIFY $? "Enabling nodejs 20"
 
 dnf install nodejs -y &>>$LOG_FILE
-VERIFY $? "Installing Nodejs"
+VERIFY $? "Installing nodejs"
 
-mkdir -p /app &>>$LOG_FILE
-VERIFY $? "Creating App Directory"
+mkdir -p /app
+VERIFY $? "Creating app directory"
 
-id roboshop
-if [ $? -ne 0 ]
-then
-    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
-    VERIFY $? "Creating roboshop user"
+id roboshop &>>$LOG_FILE
+if [ $? -eq 0 ]
+then 
+    echo -e "Roboshop user is .. $Y Already created $N" | tee -a $LOG_FILE
 else
-    echo -e "Roboshop user is ... $Y Already Created $N" | tee -a $LOG_FILE
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop system user" roboshop
+    VERIFY $? "Creating roboshop user"
 fi
 
-curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip
-VERIFY $? "Downloading cart"
 
-rm -rf /app/* &>>$LOG_FILE
+curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip 
+rm -rf /app/*
 cd /app &>>$LOG_FILE
-unzip /tmp/cart.zip &>>$LOG_FILE
-VERIFY $? "Unzipping Cart"
+unzip /tmp/user.zip &>>$LOG_FILE
+VERIFY $? "Downloading and unzipping user content"
 
 npm install &>>$LOG_FILE
-VERIFY $? "Installing Dependancies"
+VERIFY $? "Installing Dependencies"
 
 cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service &>>$LOG_FILE
 VERIFY $? "Copying service file"
@@ -71,9 +70,8 @@ VERIFY $? "Copying service file"
 systemctl daemon-reload &>>$LOG_FILE
 systemctl enable cart &>>$LOG_FILE
 systemctl start cart &>>$LOG_FILE
-VERIFY $? "Starting Cart service"
+VERIFY $? "starting cart service"
 
 END_TIME=$(date +%s)
-TOTAL_TIME=$(( $END_TIME - $START_TIME ))
-
-echo -e "Script execution completed successfully, $Y Time taken : $TOTAL_TIME secs $N" | tee -a $LOG_FILE
+TOTAL_TIME=$(($END_TIME - $START_TIME))
+echo -e "Script execution completed successfully, $Y Time_Taken = $TOTAL_TIME $N secs" | tee -a $LOG_FILE
