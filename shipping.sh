@@ -79,9 +79,9 @@ if [ $? -eq 0 ]
 then 
     echo -e "Data is .. $Y Already loaded $N" | tee -a $LOG_FILE
 else 
-    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
-    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
-    mysql -h mysql.kakuturu.online -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE   
+    mysql -h mysql.kakuturu.online -uroot -p $MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
+    mysql -h mysql.kakuturu.online -uroot -p $MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
+    mysql -h mysql.kakuturu.online -uroot -p $MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE   
     VERIFY $? "Data loading into mysql"
 fi
 
