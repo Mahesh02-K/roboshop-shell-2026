@@ -70,8 +70,7 @@ systemctl daemon-reload &>>$LOG_FILE
 VERIFY $? "Daemon Realod"
 
 systemctl enable shipping  &>>$LOG_FILE
-systemctl start shipping &>>$LOG_FILE
-VERIFY $? "Starting Shipping"
+VERIFY $? "Enabling Shipping"
 
 dnf install mysql -y  &>>$LOG_FILE
 VERIFY $? "Install MySQL"
