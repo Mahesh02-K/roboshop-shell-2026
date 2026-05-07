@@ -6,7 +6,6 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-
 LOGS_FOLDER="/var/log/roboshop-logs"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
@@ -22,6 +21,9 @@ else
     echo -e "$R ERR :: Please run this with root access $N" | tee -a $LOG_FILE
     exit 1
 fi
+
+echo -e "$R Enter rabbitmq password to setup $N"
+read -s RABBITMQ_PASSWD
 
 VERIFY(){
     if [ $1 -eq 0 ]
@@ -42,6 +44,9 @@ VERIFY $? "Installing rabbitmq"
 systemctl enable rabbitmq &>>$LOG_FILE
 systemctl start rabbitmq &>>$LOG_FILE
 VERIFY $? "Starting rabbitmq"
+
+rabbitmqctl add_user roboshop $RABBITMQ_PASSWD &>>$LOG_FILE
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$LOG_FILE
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(($END_TIME - $START_TIME))
