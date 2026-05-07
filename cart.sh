@@ -50,7 +50,7 @@ if [ $? -eq 0 ]
 then    
     echo -e "Roboshop user is .. $Y Already created $N" | tee -a $LOG_FILE
 else 
-    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop system user"
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop system user" roboshop
     VERIFY $? "Creating roboshop user"
 fi
 
