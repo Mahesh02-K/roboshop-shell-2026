@@ -63,7 +63,7 @@ VERIFY $? "Downloading and unzipping user content"
 npm install &>>$LOG_FILE
 VERIFY $? "Installing Dependencies"
 
-cp $PWD/user.service /etc/systemd/system/user.service
+cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service
 VERIFY $? "Copying service file"
 
 systemctl daemon-reload &>>$LOG_FILE
