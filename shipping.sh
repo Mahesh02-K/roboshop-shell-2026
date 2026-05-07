@@ -69,7 +69,11 @@ VERIFY $? "Copying shipping service file"
 systemctl daemon-reload &>>$LOG_FILE
 systemctl enable shipping &>>$LOG_FILE
 systemctl start shipping &>>$LOG_FILE
-VERIFY $? "Starting shipping service"
+VERIFY $? "Starting Shipping service"
+# systemctl daemon-reload &>>$LOG_FILE
+# systemctl enable shipping &>>$LOG_FILE
+# systemctl start shipping &>>$LOG_FILE
+# VERIFY $? "Starting shipping service"
 
 dnf install mysql -y &>>$LOG_FILE
 VERIFY $? "Installing mysql client"
