@@ -70,8 +70,6 @@ systemctl daemon-reload &>>$LOG_FILE
 VERIFY $? "Daemon Realod"
 
 systemctl enable shipping  &>>$LOG_FILE
-VERIFY $? "Enabling Shipping"
-
 systemctl start shipping &>>$LOG_FILE
 VERIFY $? "Starting Shipping"
 
