@@ -58,7 +58,7 @@ fi
 curl -L -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip 
 rm -rf /app/*
 cd /app &>>$LOG_FILE
-unzip /tmp/user.zip &>>$LOG_FILE
+unzip /tmp/cart.zip &>>$LOG_FILE
 VERIFY $? "Downloading and unzipping user content"
 
 npm install &>>$LOG_FILE
