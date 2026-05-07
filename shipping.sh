@@ -63,7 +63,7 @@ VERIFY $? "Packaging in shipping application"
 mv target/shipping-1.0.jar shipping.jar &>>$LOG_FILE
 VERIFY $? "Moving and renaming jar file in target folder"
 
-cp $PWD/shipping.service /etc/systemd/system/shipping.service
+cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
 VERIFY $? "Copying shipping service file"
 
 systemctl daemon-reload &>>$LOG_FILE
