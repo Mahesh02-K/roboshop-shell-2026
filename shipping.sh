@@ -67,9 +67,13 @@ cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
 VERIFY $? "Copying shipping service file"
 
 systemctl daemon-reload &>>$LOG_FILE
-systemctl enable shipping &>>$LOG_FILE
+VERIFY $? "Daemon Realod"
+
+systemctl enable shipping  &>>$LOG_FILE
+VERIFY $? "Enabling Shipping"
+
 systemctl start shipping &>>$LOG_FILE
-VERIFY $? "Starting Shipping service"
+VERIFY $? "Starting Shipping"
 # systemctl daemon-reload &>>$LOG_FILE
 # systemctl enable shipping &>>$LOG_FILE
 # systemctl start shipping &>>$LOG_FILE
